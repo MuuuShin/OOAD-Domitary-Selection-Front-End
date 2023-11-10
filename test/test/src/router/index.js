@@ -26,8 +26,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/UserView.vue')
   },{
     path: '/team/search',
-    name: 'UserView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/UserView.vue')
+    name: 'TeamSearchView',
+    component: () => import(/* webpackChunkName: "about" */ '../views/TeamSearchView.vue')
+  },{
+    path: '/team/:id',
+    name: 'TeamView',
+    component: () => import(/* webpackChunkName: "about" */ '../views/TeamView.vue')
+  },{
+    path: '/room/search',
+    name: 'RoomSearchView',
+    component: () => import(/* webpackChunkName: "about" */ '../views/RoomSearchView.vue')
   }
 ]
 

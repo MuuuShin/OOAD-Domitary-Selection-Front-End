@@ -1,6 +1,6 @@
 <template>
     <div class="about">
-      <h1>This is a User page</h1>
+      <h1>This is a Team Searching page</h1>
     </div>
 </template>
   
