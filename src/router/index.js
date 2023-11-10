@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: 'home',
+    path: '/home',
     name: 'HomeView',
     component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
   },
@@ -40,6 +40,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
