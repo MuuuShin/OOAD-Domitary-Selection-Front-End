@@ -36,6 +36,20 @@ const routes = [
     path: '/room/search',
     name: 'RoomSearchView',
     component: () => import(/* webpackChunkName: "about" */ '../views/RoomSearchView.vue')
+  },{
+    path: '/room/:id',
+    name: 'RoomView',
+    component: () => import(/* webpackChunkName: "about" */ '../views/RoomView.vue')
+  },{
+    path: '/team/:id/favour_list',
+    name: 'TeamFavourView',
+    component: () => import(/* webpackChunkName: "about" */ '../views/TeamFavourView.vue')
+  },{
+    path: '/whisper/:id',
+    name: 'MessageView',
+    component: () => import(/* webpackChunkName: "about" */ '../views/MessageView.vue')
+  },{
+    path: "*", redirect: "/"
   }
 ]
 

@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
+    <b-navbar toggleable="lg" type="dark" variant="success">
+      <b-navbar-brand >
+        <img alt="SUSTech logo" src="./assets/logo.png">
+        宿舍选择系统
+      </b-navbar-brand>
+    </b-navbar>
     <router-view/>
   </div>
 </template>

@@ -1,6 +1,15 @@
 <template>
-    <div class="about">
-      <h1>This is a login page</h1>
+    <div class="login">
+      <b-container fluid="sm">
+        <b-card
+          border-variant="primary"
+          header="log in"
+          header-bg-variant="primary"
+          header-text-variant="white"
+          align="center"
+        >
+        </b-card>
+      </b-container>     
     </div>
   </template>
   
