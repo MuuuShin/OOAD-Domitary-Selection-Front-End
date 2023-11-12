@@ -7,7 +7,8 @@ const routes = [
   {
     path: '/home',
     name: 'HomeView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue'),
+    meta: {show:true}
   },
   {
     path: '/login',
@@ -15,7 +16,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: LoginView
+    component: LoginView,
+    meta: {show:false}
   },
   {
     path: '/',
@@ -23,31 +25,38 @@ const routes = [
   },{
     path: '/user/:id',
     name: 'UserView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/UserView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/UserView.vue'),
+    meta: {show:true}
   },{
     path: '/team/search',
     name: 'TeamSearchView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/TeamSearchView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/TeamSearchView.vue'),
+    meta: {show:true}
   },{
     path: '/team/:id',
     name: 'TeamView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/TeamView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/TeamView.vue'),
+    meta: {show:true}
   },{
     path: '/room/search',
     name: 'RoomSearchView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/RoomSearchView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/RoomSearchView.vue'),
+    meta: {show:true}
   },{
     path: '/room/:id',
     name: 'RoomView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/RoomView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/RoomView.vue'),
+    meta: {show:true}
   },{
     path: '/team/:id/favour_list',
     name: 'TeamFavourView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/TeamFavourView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/TeamFavourView.vue'),
+    meta: {show:true}
   },{
     path: '/whisper/:id',
     name: 'MessageView',
-    component: () => import(/* webpackChunkName: "about" */ '../views/MessageView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/MessageView.vue'),
+    meta: {show:true}
   },{
     path: "*", redirect: "/"
   }
@@ -57,5 +66,13 @@ const router = new VueRouter({
   mode: 'history',
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.hideComponent) { // 判断是否需要隐藏组件
+    to.meta.hideComponent.hide = true;
+  } else {
+    next();
+  }
+});
 
 export default router

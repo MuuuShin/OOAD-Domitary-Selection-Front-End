@@ -5,6 +5,12 @@
         <img alt="SUSTech logo" src="./assets/logo.png">
         宿舍选择系统
       </b-navbar-brand>
+      <b-button-group v-show="$route.meta.show">
+        <b-button>主页</b-button>
+        <b-button>队伍</b-button>
+        <b-button>消息</b-button>
+        <b-button variant="warning">个人主页</b-button>
+      </b-button-group>
     </b-navbar>
     <router-view/>
   </div>
