@@ -23,7 +23,7 @@ const routes = [
     path: '/',
     redirect:'/login'
   },{
-    path: '/user/:id',
+    path: '/user',
     name: 'UserView',
     component: () => import(/* webpackChunkName: "about" */ '../views/UserView.vue'),
     meta: {show:true}
@@ -33,7 +33,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/TeamSearchView.vue'),
     meta: {show:true}
   },{
-    path: '/team/:id',
+    path: '/team',
     name: 'TeamView',
     component: () => import(/* webpackChunkName: "about" */ '../views/TeamView.vue'),
     meta: {show:true}
@@ -43,17 +43,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/RoomSearchView.vue'),
     meta: {show:true}
   },{
-    path: '/room/:id',
+    path: '/room',
     name: 'RoomView',
     component: () => import(/* webpackChunkName: "about" */ '../views/RoomView.vue'),
     meta: {show:true}
   },{
-    path: '/team/:id/favour_list',
+    path: '/team/favour_list',
     name: 'TeamFavourView',
     component: () => import(/* webpackChunkName: "about" */ '../views/TeamFavourView.vue'),
     meta: {show:true}
   },{
-    path: '/whisper/:id',
+    path: '/whisper',
     name: 'MessageView',
     component: () => import(/* webpackChunkName: "about" */ '../views/MessageView.vue'),
     meta: {show:true}
@@ -75,4 +75,9 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+const originalPush = VueRouter.prototype.push
+    //修改原型对象中的push方法
+VueRouter.prototype.push = function push(location) {
+        return originalPush.call(this, location).catch(err => err)
+    }
 export default router
