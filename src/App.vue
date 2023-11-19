@@ -5,11 +5,41 @@
         <img alt="SUSTech logo" src="./assets/logo.png">
         宿舍选择系统
       </b-navbar-brand>
+      <b-button-group v-show="$route.meta.show">
+        <b-button @click="jumpHome">主页</b-button>
+        <b-button @click="jumpTeam">队伍</b-button>
+        <b-button @click="jumpMessage">消息</b-button>
+        <b-button variant="warning" @click="jumpPersonal">个人主页</b-button>
+      </b-button-group>
     </b-navbar>
     <router-view/>
   </div>
 </template>
-
+<script>
+  export default{
+    methods: {
+      getID(){
+        const id = 12345678
+        return id
+      },
+      jumpHome(){
+        this.$router.push('/home')
+      },
+      jumpTeam(){
+        const id = this.getID()
+        this.$router.push({path:"/team",query: {id}})
+      },
+      jumpMessage(){
+        const id = this.getID()
+        this.$router.push({path:"/whisper",query: {id}})
+      },
+      jumpPersonal(){
+        const id = this.getID()
+        this.$router.push({path:"/user",query: {id}})
+      }
+    }
+  }
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
