@@ -1,16 +1,21 @@
 <template>
   <div class="container">
     <div id="login">
-      <b-container fluid="sm">
-        <b-card
-          border-variant="primary"
-          header="log in"
-          header-bg-variant="primary"
-          header-text-variant="white"
-          align="center"
-        >
-          <LoginForm :form="form"></LoginForm>
-        </b-card>
+      <b-container fluid="lg">
+        <b-row align-h="center" align-v="center" style="height: 100vh">
+          <b-col sm="12" md="6">
+            <b-card
+              border-variant="secondary"
+              header="Log In"
+              header-bg-variant="secondary"
+              header-text-variant="white"
+              align="center"
+              class="shadow"
+            >
+              <LoginForm :form="form"></LoginForm>
+            </b-card>
+          </b-col>
+        </b-row>
       </b-container>     
     </div>
   </div>

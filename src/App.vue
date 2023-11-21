@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" type="dark" variant="success">
+    <b-navbar toggleable="lg" type="dark" variant="success" style="padding-left: 20px; padding-right: 20px;">
       <b-navbar-brand >
         <img alt="SUSTech logo" src="./assets/logo.png">
         宿舍选择系统
       </b-navbar-brand>
-      <b-button-group v-show="$route.meta.show">
-        <b-button @click="jumpHome">主页</b-button>
+      <b-button-group class="nv-bg" v-show="$route.meta.show">
+        <b-button @click="jumpHome" >主页</b-button>
         <b-button @click="jumpTeam">队伍</b-button>
         <b-button @click="jumpMessage">消息</b-button>
         <b-button variant="warning" @click="jumpPersonal">个人主页</b-button>
@@ -15,6 +15,7 @@
     <router-view/>
   </div>
 </template>
+
 <script>
   export default{
     methods: {
@@ -47,6 +48,10 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.nv-bg {
+  margin-left: auto;
 }
 
 nav {
