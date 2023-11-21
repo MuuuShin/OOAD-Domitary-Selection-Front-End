@@ -23,7 +23,7 @@
           placeholder="password"
         ></b-form-input>
       </b-form-group>
-  
+      <h1></h1>
       <b-button type="submit" variant="primary">登录</b-button>
       <b-button v-b-modal.modal-1>忘记密码</b-button>
       <b-modal id="modal-1" title="忘记密码">
