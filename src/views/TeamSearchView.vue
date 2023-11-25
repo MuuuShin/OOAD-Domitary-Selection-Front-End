@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import FilterForm from '@/components/FilterForm.vue';
+import FilterForm from '@/components/TeamFilterForm.vue';
 
 export default {
   components: {
