@@ -19,23 +19,27 @@
 <script>
   export default{
     methods: {
-      getID(){
-        const id = 12345678
+      getId(){
+        const id = 114514
         return id
+      },
+      getTeamId(){
+        const TeamId = 1919810
+        return TeamId
       },
       jumpHome(){
         this.$router.push('/home')
       },
       jumpTeam(){
-        const id = this.getID()
+        const id = this.getTeamId()
         this.$router.push({path:"/team",query: {id}})
       },
       jumpMessage(){
-        const id = this.getID()
+        const id = this.getId()
         this.$router.push({path:"/whisper",query: {id}})
       },
       jumpPersonal(){
-        const id = this.getID()
+        const id = this.getId()
         this.$router.push({path:"/user",query: {id}})
       }
     }
