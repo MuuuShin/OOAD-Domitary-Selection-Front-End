@@ -24,6 +24,15 @@
         ></b-form-input>
       </b-form-group>
       <h1></h1>
+      <b-form-checkbox
+        id="checkbox-1"
+        v-model="status"
+        name="checkbox-1"
+        value="accepted"
+        unchecked-value="not_accepted"
+      >
+        我是教师
+      </b-form-checkbox>
       <b-button type="submit" variant="primary">登录</b-button>
       <b-button v-b-modal.modal-1>忘记密码</b-button>
       <b-modal id="modal-1" title="忘记密码">
@@ -40,13 +49,15 @@
         form: {
           userID: '',
           pass: ''
-        }
+        },
+        status: 'not_accepted'
       }
     },
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
         alert(JSON.stringify(this.form))
+        //TODO: implement the log in method
       },
       toggle() {
       console.log('Toggle button clicked')

@@ -4,7 +4,7 @@
       <b-col md="1"></b-col>
       <b-col md="2">
         <b-card no-body>
-          <filter-form @applyFilter="fetchTeams" />
+          <filter-form @applyFilter="fetchRooms" />
         </b-card>
       </b-col>
 
@@ -25,7 +25,7 @@
             @filtered="onFiltered"
           >
             <template v-slot:cell(actions)="row">
-              <b-button size="sm" @click="viewTeamDetails(row.item)" class="mr-1">
+              <b-button size="sm" @click="viewRoomDetails(row.item)" class="mr-1">
                 查看详情
               </b-button>
               <b-button size="sm" @click="favourRoom(row.item)" class="mr-1">
@@ -80,7 +80,7 @@ export default {
     };
   },
   methods: {
-    fetchTeams() {
+    fetchRooms() {
       // TODO: Fetch data from the API
       // Update this.rooms and this.totalRows based on the API response
     },
@@ -89,10 +89,10 @@ export default {
       // TODO: Get the primary key for the room from the backend
       return roomId
     },
-    viewTeamDetails(room) {
+    viewRoomDetails(room) {
       const roomId = this.getRoomKey(room)
       // TODO: Get the primary key for the room from the backend
-      this.$router.push({path:"/team",query: {roomId}})
+      this.$router.push({path:"/room",query: {roomId}})
     },
     favourRoom(room) {
       const roomId = this.getRoomKey(room)
@@ -101,7 +101,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchTeams(); // Fetch teams when the component is mounted
+    this.fetchRooms(); // Fetch teams when the component is mounted
   },
 };
 </script>
