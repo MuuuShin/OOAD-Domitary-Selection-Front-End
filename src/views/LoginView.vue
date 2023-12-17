@@ -2,7 +2,7 @@
   <div class="container">
     <div id="login">
       <b-container fluid="lg">
-        <b-row align-h="center" align-v="center" style="height: 100vh">
+        <b-row align-h="center" align-v="center" style="height: 80vh">
           <b-col sm="12" md="6">
             <b-card
               border-variant="secondary"
