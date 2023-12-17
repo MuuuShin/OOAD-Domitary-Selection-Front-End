@@ -59,7 +59,10 @@ export default {
 
   },
   created: {
-    
+
   }
 };
 </script>
+
+// /{teamId}/members
+// /{teamId}

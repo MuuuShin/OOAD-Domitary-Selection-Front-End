@@ -46,6 +46,7 @@
 
 <script>
 import FilterForm from '@/components/TeamFilterForm.vue';
+import axios from "axios";
 
 export default {
   components: {
@@ -77,9 +78,14 @@ export default {
     };
   },
   methods: {
-    fetchTeams() {
-      // TODO: Fetch data from the API
-      // Update this.teams and this.totalRows based on the API response
+    async fetchTeams() {
+        /// users/finduser/{sleeptime}/{awaketime}/{query}
+        const response = await axios.get('/users/finduser/'+FilterForm.sleepTime+"/"+FilterForm.wakeUpTime+"/"+FilterForm.features)
+        //这里难搞 得再问问
+        this.teams = response.data
+
+        // TODO: Fetch data from the API
+        // Update this.teams and this.totalRows based on the API response
     },
     viewTeamDetails(teamId) {
       this.$router.push({path:"/team",query: {teamId}})

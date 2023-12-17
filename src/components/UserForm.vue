@@ -42,8 +42,10 @@
         </b-form>
     </div>
 </template>
-    
+
 <script>
+//import axios from "axios";
+
 export default {
     data() {
         return {
@@ -69,6 +71,18 @@ export default {
             console.log('Alert dismissed')
         }
     },
+    // mounted() {
+    //     try {
+    //         //后端获取数据
+    //         let request = {};
+    //         const response = axios.post('/user', request);
+    //         console.log(response.data);
+    //
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    //
+    // },
     watch: {
         show(newVal) {
             console.log('Alert is now ' + (newVal ? 'visible' : 'hidden'))

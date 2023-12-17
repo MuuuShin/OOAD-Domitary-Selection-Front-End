@@ -49,6 +49,7 @@
 
 <script>
 import FilterForm from '@/components/RoomFilterForm.vue';
+import axios from "axios";
 
 export default {
   components: {
@@ -80,13 +81,27 @@ export default {
     };
   },
   methods: {
-    fetchRooms() {
-      // TODO: Fetch data from the API
-      // Update this.rooms and this.totalRows based on the API response
+    async fetchRooms() {
+        let request = {}
+        if (FilterForm.region == null) {
+            //返回所有房间
+        } else if (FilterForm.building == null) {
+            //返回该区域所有房间
+        } else if (FilterForm.floor1 == null) {
+            //返回该楼栋所有房间
+        } else {
+            const response = await axios.get('/floors/'+FilterForm.floor1+'/rooms', request);
+            //返回该楼层所有房间
+            this.rooms = response.data
+            this.totalRows = response.data.length
+        }
+        // TODO: Fetch data from the API
+        // Update this.rooms and this.totalRows based on the API response
     },
     getRoomKey(room){
       const roomId = room.id
       // TODO: Get the primary key for the room from the backend
+        // 错误的,这里应该事先在fetchRooms() 就有key了
       return roomId
     },
     viewRoomDetails(room) {
@@ -94,10 +109,13 @@ export default {
       // TODO: Get the primary key for the room from the backend
       this.$router.push({path:"/room",query: {roomId}})
     },
-    favourRoom(room) {
-      const roomId = this.getRoomKey(room)
-      // TODO: add room to team favourite list
-      return roomId
+    async favourRoom(room) {
+        const roomId = this.getRoomKey(room)
+        let request = {roomId: roomId}
+        const response = await axios.post('/teams'+'/favorites', request);
+        console.log( response.data)
+        // TODO: add room to team favourite list
+        return roomId
     },
   },
   mounted() {

@@ -129,3 +129,5 @@ export default {
   },
 };
 </script>
+
+//  const response= await axios.get('/rooms/{id}', request)

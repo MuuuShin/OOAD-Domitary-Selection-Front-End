@@ -87,3 +87,5 @@
   },
 };
 </script>
+
+//  const response= await axios.get('/{teamId}/favorites', request)
