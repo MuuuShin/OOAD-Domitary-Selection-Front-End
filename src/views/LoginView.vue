@@ -25,12 +25,14 @@
       <div class="create-account">
         <a href="#">忘记密码</a>
       </div>
-      <button @click="">登录</button>
+      <button v-on:click = "login">登录</button>
     </div>
   </div>
 </template>
 
 <script>
+
+
 export default {
   data() {
     return {
@@ -60,27 +62,12 @@ export default {
       }
     },
     login() {
-      try {
-        axios.post('http://localhost:8080/login', this.loginForm).then(response => {
-          console.log(response.data);  // 处理响应
-          if (response.data.code === 200) {
-            cookie.set('Authorization', response.data.data);  // 将 jwt 保存到 cookie 中
-            this.$message({
-              message: '登录成功',
-              type: 'success'
-            });
-            this.$router.push('/rooms');
-          } else {
-            this.$message({
-              message: '登录失败',
-              type: 'error'
-            });
-          }
-        });
+      let loginForm = {
+        username: this.username,
+        password: this.password
       }
-      catch (error) {
-        console.error(error);  // 处理错误
-      }
+      //TODO: login
+      loginForm.username = this.username;
     },
   }
 }
