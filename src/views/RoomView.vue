@@ -103,9 +103,9 @@ export default {
     this.fetchRoomData(roomId);
   },
   methods: {
-    fetchRoomData(roomId) {
-      // TODO: Implement logic to fetch the information of the room
-    },
+    // fetchRoomData(roomId) {
+    //   // TODO: Implement logic to fetch the information of the room
+    // },
     addToFavorites() {
       // TODO: Implement logic to add the room to favorites
     },
