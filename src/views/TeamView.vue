@@ -40,7 +40,7 @@
     <transition name="fade">
       <div v-if="showJoinPopup" class="popup-overlay">
         <div class="popup">
-          <h4>申请加入队伍</h4>
+          <h2>申请加入队伍</h2>
           <textarea v-model="applicationText" placeholder="输入申请文本"></textarea>
           <div class="buttons">
             <button @click="cancelJoin">取消</button>
@@ -68,11 +68,11 @@
 </template>
 
 
-<style>
-/* 其他样式保持不变，添加以下新样式 */
+<style scoped>
 .no-team {
   text-align: center;
   margin-top: 20px;
+  margin-top: 40px;
 }
 
 .buttons {
@@ -86,6 +86,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 }
 
 .member-form {
@@ -117,7 +118,7 @@
 button {
   margin-top: 10px;
   padding: 8px;
-  background-color: #3498db; /* 统一按钮背景颜色 */
+  background-color: #2c3e50; /* 深灰色 */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -125,7 +126,7 @@ button {
 }
 
 button:disabled {
-  background-color: #95a5a6;
+  background-color: #95a5a6; /* 浅灰色 */
   cursor: not-allowed;
 }
 
@@ -146,6 +147,8 @@ button:disabled {
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+  width: 300px; /* 设置宽度 */
+  margin: 0 auto; /* 水平居中 */
 }
 
 .popup textarea {
@@ -157,12 +160,9 @@ button:disabled {
 input {
   width: 100%;
   margin: 10px 0;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -174,6 +174,7 @@ input {
   opacity: 0;
 }
 </style>
+
 
 
 

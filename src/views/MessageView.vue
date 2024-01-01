@@ -1,99 +1,195 @@
 <template>
-  <div class="container-fluid">
-    <b-row>
-      <!-- 左侧聊天列表 -->
-      <b-col md="3">
-        <b-list-group v-if="showChatList">
-          <b-list-group-item
-            v-for="contact in contacts"
-            :key="contact.id"
-            @click="selectChat(contact)"
-            :class="{ 'active': contact === selectedChat }"
-          >
-            <b-avatar :src="contact.avatar" class="mr-2"></b-avatar>
-            {{ contact.name }}
-          </b-list-group-item>
-        </b-list-group>
-      </b-col>
+  <div class="chat-container">
+    <!-- 左侧聊天用户列表 -->
+    <div class="chat-sidebar">
+      <div v-for="(user, index) in users" :key="index" @click="selectUser(user)"
+           :class="{ 'active': user === selectedUser }">
+        {{ user.name }}
+        <span v-if="user.hasNewMessage" class="new-message-dot"></span>
+      </div>
+    </div>
 
-      <b-col md="9">
-        <div v-if="selectedChat">
-          <!-- 聊天信息 -->
-          <b-card v-for="message in selectedChat.messages" :key="message.id" class="mb-2" :style="message.sender === 'me' ? 'background-color: #4CAF50; color: #000; margin-left: 20%; width: 80%;' : 'background-color: #000; color: #fff; width: 80%;'">
-            <!-- 区分消息来源 -->
-            <p>
-              {{ message.content }}
-            </p>
-          </b-card>
-
-          <!-- 输入框和发送键 -->
-          <b-form @submit.prevent="sendMessage">
-            <b-input-group>
-              <b-form-input v-model="newMessage" placeholder="输入聊天内容"></b-form-input>
-              <b-input-group-append>
-                <b-button type="submit" variant="primary">发送</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-form>
+    <!-- 右侧聊天框 -->
+    <div class="chat-box">
+      <div v-if="selectedUser">
+        <div class="chat-header">
+          <h2>{{ selectedUser.name }}</h2>
         </div>
-      </b-col>
-    </b-row>
+        <div class="chat-messages">
+          <div v-for="(message, index) in selectedUser.messages" :key="index" class="message"
+               :class="{ 'own-message': message.isOwn }">
+            {{ message.text }}
+          </div>
+        </div>
+        <div v-if="selectedUser.id !== 0" class="chat-input">
+          <textarea v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type your message..."></textarea>
+          <button @click="sendMessage">Send</button>
+        </div>
+        <div v-else class="system-message">
+          System messages are not editable.
+        </div>
+      </div>
+      <div v-else>
+        <p>Select a user to start chatting.</p>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.chat-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.chat-sidebar {
+  width: 20%;
+  padding: 20px;
+  background-color: #333;
+  color: #fff;
+  overflow-y: auto;
+}
+
+.chat-sidebar div {
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.chat-sidebar div:hover {
+  background-color: #555;
+}
+
+.new-message-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+
+.chat-box {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.chat-header {
+  background-color: #444;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+.chat-messages {
+  height: 60vh;
+  overflow-y: auto;
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.own-message {
+  background-color: #3498db;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.chat-input {
+  height: calc(40vh - 110px);
+  margin-top: 20px;
+  display: flex;
+}
+
+.chat-input input {
+  flex-grow: 2; /* 增大输入框宽度 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.chat-input button {
+  padding: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.system-message {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.chat-input textarea {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+</style>
 
 <script>
 export default {
   data() {
     return {
-      showChatList: true,
-      contacts: [
-        { id: 1, name: 'User 1', avatar: 'avatar1.jpg', messages: [] },
-        { id: 2, name: 'User 2', avatar: 'avatar2.jpg', messages: [] },
-        // Add more contacts as needed
+      users: [
+        {id: 0, name: 'System', hasNewMessage: false, messages: []},
+        {
+          id: 1, name: 'User 1', hasNewMessage: false, messages: [{
+            text: 'Hello!',
+            isOwn: true,
+            timestamp: '2024-01-01T12:34:56', // 可能的发送时间
+            sender: {
+              id: 1,
+              name: 'User123',
+              // 其他用户信息
+            }
+          }]
+        },
+        {id: 2, name: 'User 2', hasNewMessage: false, messages: []},
+        // Add more users as needed
       ],
-      selectedChat: null,
+      selectedUser: null,
       newMessage: '',
     };
   },
   methods: {
-    selectChat(contact) {
-      this.selectedChat = contact;
+    selectUser(user) {
+      this.selectedUser = user;
+      user.hasNewMessage = false; // Marking messages as read
     },
     sendMessage() {
-      if (this.selectedChat) {
-        const message = {
-          content: this.newMessage,
-          timestamp: new Date(),
-          sender: 'me', // 'me' 表示自己发送的消息，'other' 表示对方发送的消息
-        };
-        this.selectedChat.messages.push(message);
-        this.newMessage = ''; // 清空输入框
-      }
+      if (this.newMessage.trim() === '') return;
+
+      this.selectedUser.messages.push({
+        text: this.newMessage,
+        isOwn: true,
+      });
+
+      // Simulating a reply from the other user after a delay
+      setTimeout(() => {
+        this.selectedUser.messages.push({
+          text: 'Thanks for your message!',
+          isOwn: false,
+        });
+        this.selectedUser.hasNewMessage = true; // Marking messages as unread
+      }, 1000);
+
+      this.newMessage = '';
     },
   },
 };
 </script>
-
-<style>
-/* 添加自定义样式以美化界面 */
-.container-fluid {
-  padding: 20px;
-}
-
-.b-list-group-item {
-  cursor: pointer;
-}
-
-.b-list-group-item.active {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.b-card {
-  max-width: 300px;
-}
-
-.b-input-group {
-  margin-top: 10px;
-}
-</style>
