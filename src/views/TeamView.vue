@@ -1,16 +1,16 @@
 <template>
   <div>
     <!-- 如果用户没有队伍 -->
-    <div v-if="team.groupId === 0 && !isMember" class="no-team">
+    <div v-if="team.groupId === 0" class="no-team">
       <p>你还没有队伍</p>
       <div class="buttons">
-        <button @click="$router.push('/search/team')">去搜索队伍</button>
+        <button @click="$router.push('/team/search')">去搜索队伍</button>
         <button @click="createTeam()">创建队伍</button>
       </div>
     </div>
 
     <!-- 如果用户有队伍或是队伍成员 -->
-    <div v-if="team.groupId !== 0" class="team-details">
+    <div v-else class="team-details">
       <!-- 队伍成员表单 -->
       <div v-for="(member, index) in team.members" :key="index" class="member-form">
         <div class="member-info">
@@ -31,10 +31,11 @@
       <button v-if="isMember" @click="viewFavorites">队伍收藏</button>
 
       <!-- 加入/退出队伍按钮 -->
-      <button @click="toggleJoinLeave" :disabled="waiting || (!isMember && joinButtonDisabled)">
+      <button @click="toggleJoinLeave" :disabled="waiting || joinButtonDisabled">
         {{ isMember ? (waiting ? '等待中' : '退出') : '加入' }}
       </button>
     </div>
+
   </div>
 </template>
 
@@ -108,7 +109,7 @@ export default {
   data() {
     return {
       team: {
-        groupId: -1,
+        groupId: 1,
         name: "Team 1",
         leader: 1,
         roomId: 514,
@@ -230,13 +231,19 @@ export default {
       return await axios.get(`/teams/${teamId}`)
           .then((response) => {
             const json = response.data;
-            console.log(response);
             if (json.code !== 200) {
               alert("获取队伍信息失败: " + json.msg);
+              console.log(response);
               return -1;
             }
-            console.log(1);
-            this.team = json.data;
+            //this.team = json.data;
+            this.team.groupId = json.data.groupId;
+            this.team.name = json.data.name;
+            this.team.leader = json.data.leader;
+            this.team.roomId = json.data.roomId;
+            this.team.intro = json.data.intro;
+            console.log(this._data);
+
             return 0;
           })
           .catch((error) => {
@@ -247,7 +254,6 @@ export default {
     },
     // 获取队伍成员信息
     async fetchTeamMembers() {
-      console.log(2);
       await axios.get(`/teams/${this.team.groupId}/members`)
           .then((response) => {
             if (response.data.code !== 200) {
@@ -264,13 +270,12 @@ export default {
     },
     // 设置用户权限
     setPermissions() {
-      console.log(3);
       //
       const userId = parseInt(localStorage.getItem('userId'));
       //对齐类型
       this.isMember = this.team.members.some((member) => member.studentId === userId);
       this.isLeader = this.team.leader === userId;
-      this.joinButtonDisabled = localStorage['teamId'] !== null;
+      this.joinButtonDisabled = localStorage['teamId'] !== 'null'
     },
     async updateUser() {
       const id = localStorage.getItem('userId');
@@ -286,7 +291,6 @@ export default {
             localStorage.setItem('teamId', user.groupId);
             localStorage.setItem('account', user.account);
             localStorage.setItem('name', user.name);
-            console.log(response)
           })
           .catch((error) => {
             alert('获取用户信息失败: ' + error.message);
@@ -297,7 +301,6 @@ export default {
     async initTeam() {
       await this.updateUser();
       const isInTeam = await this.fetchTeam();
-      console.log(this.team)
       if (isInTeam !== -1) {
         await this.fetchTeamMembers();
         this.setPermissions();
