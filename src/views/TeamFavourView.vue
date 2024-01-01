@@ -90,9 +90,7 @@ export default {
             }
             this.totalRows = response.data.data.length
             console.log(response)
-            if (this.rooms.length === 0) {
-              alert("暂无收藏")
-            }
+
             if (this.currentPage !== 1 && this.currentPage >= Math.ceil(this.totalRows / this.perPage)) {
               this.currentPage = Math.ceil(this.totalRows / this.perPage)
             }
