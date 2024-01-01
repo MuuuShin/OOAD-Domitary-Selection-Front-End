@@ -2,36 +2,38 @@
   <div class="login-container">
     <div class="login-card">
       <div class="login-logo">
-        <img src="../assets/LOGO.svg" alt="SUSTech Logo" >
+        <img src="../assets/LOGO.svg" alt="SUSTech Logo">
       </div>
       <h1><b>登录</b></h1>
 
       <div class="input-container">
         <label :class="{'label-active': active_username}">工号/学号</label>
-<!--        <input type="text" @focus="activateLabel" @blur="deactivateLabel">-->
+        <!--        <input type="text" @focus="activateLabel" @blur="deactivateLabel">-->
         <input @focus="activateLabel_username" @blur="deactivateLabel_username" v-model="username">
       </div>
-<!--      <input type="password" placeholder="密码">-->
+      <!--      <input type="password" placeholder="密码">-->
       <div class="input-container">
         <label :class="{'label-active': active_password}">密码</label>
         <!--        <input type="text" @focus="activateLabel" @blur="deactivateLabel">-->
         <input type="password" @focus="activateLabel_password" @blur="deactivateLabel_password" v-model="password">
       </div>
-<!--      <p class="hint">Forgot email?</p>-->
-<!--      <div class="guest-mode">-->
-<!--        <p>Not your computer? Use Guest mode to sign in privately.</p>-->
-<!--        <a href="#">Learn more</a>-->
-<!--      </div>-->
+      <!--      <p class="hint">Forgot email?</p>-->
+      <!--      <div class="guest-mode">-->
+      <!--        <p>Not your computer? Use Guest mode to sign in privately.</p>-->
+      <!--        <a href="#">Learn more</a>-->
+      <!--      </div>-->
       <div class="create-account">
         <a href="#">忘记密码</a>
       </div>
-      <button v-on:click = "login">登录</button>
+      <button v-on:click="login">登录</button>
     </div>
   </div>
 </template>
 
 <script>
 
+
+import axios from "axios";
 
 export default {
   data() {
@@ -61,13 +63,42 @@ export default {
         this.active_password = false;
       }
     },
-    login() {
-      let loginForm = {
-        username: this.username,
-        password: this.password
+    async login() {
+      try {
+        //axios.defaults.headers.common['Authorization'] = `Bearer`;
+          let request = {
+              username: this.username,
+              password: this.password
+          }
+
+        const response = await axios.post('/login', request);
+        console.log(response.data);
+        if (response.data.code !== 200) {
+          alert("登陆失败: "+response.data.msg);
+          return;
+        }
+        alert("登陆成功!");
+
+        // 获取JWT令牌
+        const authToken = response.data.data[0];
+        // 获取用户信息
+        const user = response.data.data[1];
+        localStorage.setItem('userId', user.studentId);
+        localStorage.setItem('teamId', user.groupId);
+        localStorage.setItem('account', user.account);
+        localStorage.setItem('name', user.name);
+        // 将JWT令牌存储在本地
+        localStorage.setItem('userAuthToken', authToken);
+
+        // 设置Axios的默认请求头，包含JWT令牌
+        axios.defaults.headers.common['Authorization'] = `${authToken}`;
+
+        // 跳转到home
+        await this.$router.push('/home');
+      } catch (error) {
+        console.error('登录失败:', error);
+        alert('登录失败: '+error.message);
       }
-      //TODO: login
-      loginForm.username = this.username;
     },
   }
 }
@@ -125,7 +156,7 @@ label {
   margin: auto;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   background: #fff;
   text-align: center;
 }

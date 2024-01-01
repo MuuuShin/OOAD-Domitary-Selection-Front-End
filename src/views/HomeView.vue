@@ -33,7 +33,7 @@
     </div>
 
     <main class="dashboard-main">
-      <img src="../assets/background_illustration_v2.svg" alt="background" class="background_img">
+      <!--      <img src="../assets/background_illustration_v2.svg" alt="background" class="background_img">-->
       <div class="welcome-container">
         <img src="../assets/SUSTech.svg" alt="Cloud Logo" class="welcome-logo">
         <h1 class="welcome-header">&nbsp;欢迎</h1>
@@ -44,8 +44,8 @@
         </div>
         <div class="project-info">
           <h5>
-            <span>学号：{{ studentId }}&nbsp;&nbsp;</span>
-            <span>姓名：{{ studentName }}</span>
+            <span>学号：{{ user.account }}&nbsp;&nbsp;</span>
+            <span>姓名：{{ user.name }}</span>
             <br>
             <br>
             <span>当前选房阶段：&nbsp;{{ currentPeriod }}</span>
@@ -62,7 +62,7 @@
         </div>
         <br>
         <div class="quick-access-grid">
-          <a class="quick-access-card" href="#">
+          <a class="quick-access-card" href="/room/search">
             <div class="quick-access-card-content-wrapper">
               <div class="content">
                 <div class="centered-icon">
@@ -83,7 +83,7 @@
               </div>
             </div>
           </a>
-          <a class="quick-access-card" href="#">
+          <a class="quick-access-card" href="/team/search">
             <div class="quick-access-card-content-wrapper">
               <div class="content">
                 <div class="centered-icon">
@@ -99,7 +99,7 @@
             </div>
           </a>
           <a class="quick-access-card"
-             href="#">
+             href="/team">
             <div class="quick-access-card-content-wrapper">
               <div class="content">
                 <div class="centered-icon">
@@ -161,16 +161,28 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: 'CloudDashboard',
   // 在这里添加JavaScript逻辑
   data() {
     return {
       showDropdown: false,
-      studentId: '11910101',
-      studentName: '张三',
       currentPeriod: '选房阶段',
-      userAvatarUrl: 'https://www.gstatic.com/pantheon/images/welcome/supercloud.svg'
+      userAvatarUrl: 'https://www.gstatic.com/pantheon/images/welcome/supercloud.svg',
+      user: {
+        account: "11111",
+        awakeTime: "10:10:10",
+        gender: 1,
+        groupId: null,
+        imgURL: null,
+        intro: "xxx",
+        name: '张三',
+        sleepTime: "22:00:00",
+        studentId: -1,
+        type: 1,
+      }
     };
   },
   methods: {
@@ -184,8 +196,23 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     document.addEventListener('click', this.closeDropdown);
+    try {
+      const response = await axios.get('/users', {
+        params: {
+          id: localStorage.getItem('userId')
+        }
+      });
+      console.log(response.data);
+      if (response.data.code !== 200) {
+        alert(response.data.msg);
+        return;
+      }
+      this.user = response.data.data;
+    } catch (error) {
+      console.log(error);
+    }
   },
   beforeDestroy() {
     document.removeEventListener('click', this.closeDropdown);
@@ -380,7 +407,7 @@ a {
   margin-right: 10px; /* 在元素之间添加一些间隔 */
 }
 
-.avatar-container img{
+.avatar-container img {
   width: 100%; /* 确保图片填满其容器 */
   height: auto; /* 保持图片的纵横比 */
   vertical-align: middle;
@@ -391,10 +418,10 @@ a {
   max-height: 40px; /* 限制图片的最大高度 */
   text-align: center;
 }
-.button-container{
+
+.button-container {
   margin-top: 2%;
 }
-
 
 
 .logo {
@@ -410,8 +437,6 @@ a {
 .avatar {
   border-radius: 50%; /* 头像的圆形效果 */
 }
-
-
 
 
 .dropdown {

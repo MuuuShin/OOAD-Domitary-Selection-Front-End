@@ -88,7 +88,7 @@ export default {
         // Update this.teams and this.totalRows based on the API response
     },
     viewTeamDetails(teamId) {
-      this.$router.push({path:"/team",query: {teamId}})
+      this.$router.push({path:"/team",query: {teamId}});
     },
   },
   mounted() {

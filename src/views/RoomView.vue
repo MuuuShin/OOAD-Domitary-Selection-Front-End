@@ -76,11 +76,14 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
       room: {
         // Replace with actual room data
+        id: '514',
         name: '514',
         area: '湖畔',
         building: '1',
@@ -89,7 +92,7 @@ export default {
         isFavoured: '1919810',
         image: 'room-image.jpg',
         comments: [
-          { id: 1, content: 'Great room!' },
+          {id: 1, content: 'Great room!'},
           // Other comments
         ],
       },
@@ -103,28 +106,98 @@ export default {
     this.fetchRoomData(roomId);
   },
   methods: {
-    // fetchRoomData(roomId) {
-    //   // TODO: Implement logic to fetch the information of the room
-    // },
+    fetchRoomData(roomId) {
+      axios.get(`/rooms/${roomId}`)
+          .then((response) => {
+            console.log(response)
+            if (response.data.code !== 200) {
+              alert("获取房间信息失败: " + response.data.msg)
+              return -1
+            }
+
+            this.room.id = response.data.data.id
+            this.room.name = response.data.data.roomNumber
+            this.room.area = response.data.data.region
+            this.room.building = response.data.data.dormitory
+            this.room.floor = response.data.data.floor
+            //todo: 没做完
+          })
+          .catch((error) => {
+            console.log(error)
+            alert("获取房间信息失败: " + error)
+          })
+      axios.get(`/rooms/${roomId}/comments`)
+          .then((response) => {
+            console.log(response)
+            if (response.data.code !== 200) {
+              alert("获取评论失败: " + response.data.msg)
+              return -1
+            }
+            this.room.comments = response.data.data
+          })
+          .catch((error) => {
+            console.log(error)
+            alert("获取评论失败: " + error)
+          })
+
+    },
     addToFavorites() {
-      // TODO: Implement logic to add the room to favorites
+      const roomId = this.room.id
+      let request = {roomId: roomId}
+      axios.post(`/teams/${this.teamId}/favorites`, request)
+          .then((response) => {
+            if(response.data.code === 200) {
+              alert("收藏成功!");
+              //更新页面
+              //todo:按钮变成已收藏
+            }else {
+              alert("收藏失败: "+response.data.msg);
+            }
+            console.log(response)
+          })
+          .catch((error) => {
+            alert('收藏失败: '+error.message);
+            console.log(error)
+            return -1
+          })
+      return roomId
     },
     openEditForm() {
       this.isEditing = true;
     },
     updateRoom() {
       // TODO: Implement logic to update room information
+      //老师?
       this.isEditing = false;
     },
     uploadImage() {
       // TODO: Implement logic to upload room image
+      // 搁置
     },
-    replyToComment(comment) {
-      return comment;
-      // TODO: Implement logic to reply to a comment
+    replyToComment(commentId) {
+      let request={
+        title: "test",
+        body: "test",
+        postId: commentId
+      }
+      axios.post(`/rooms/comments`, request)
+          .then((response) => {
+            console.log(response)
+            if (response.data.code !== 200) {
+              alert("添加评论失败: " + response.data.msg)
+              return -1
+            }
+            //评论成功
+            this.fetchRoomData(this.room.id);
+
+          })
+          .catch((error) => {
+            console.log(error)
+            alert("添加评论失败: " + error)
+          })
     },
     addComment() {
-      // TODO: Implement logic to add a new comment
+      this.replyToComment(this.room.id)
     },
   },
 };
